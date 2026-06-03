@@ -1,58 +1,118 @@
-# 食光营养助手
+# NutriBite - Food & Drink Assistant
 
-食光营养助手是一个基于 .NET MAUI 的“食品与饮品”课程项目应用。应用可以记录食品和饮品，展示营养摘要，验证用户输入，并演示移动设备硬件功能。
+NutriBite is a .NET MAUI cross-platform application designed as a course project for food and drink nutrition tracking. It allows users to record meals, view nutritional summaries, and demonstrates the use of mobile hardware features such as camera, location, text-to-speech, vibration, and haptic feedback.
 
-## 主要功能
+## Features
 
-- 食品和饮品列表，支持搜索和详情页。
-- 添加记录表单，检查必填项和营养数值。
-- 使用相机拍摄食品照片并预览。
-- 使用定位记录用餐或购买地点。
-- 使用文字转语音朗读营养摘要和帮助内容。
-- 使用震动与触觉反馈提供操作提醒。
-- 支持主题切换和大字体模式。
-- 包含语义标签、屏幕阅读器播报和清晰的验证提示。
+- **Food/Drink List** – Browse, search by name/category/tags, and view details.
+- **Add New Record** – Form with validation for required fields and numeric nutrition values.
+- **Nutrition Detail Page** – Read summary aloud, trigger vibration reminder.
+- **Hardware Demo Page** – Capture food photo with camera, get current location, text-to-speech help, haptic feedback and vibration.
+- **Accessibility Support** – Large text mode, semantic properties, screen reader announcements.
+- **Theme Switching** – Light / Dark / System theme.
+- **Mock API Integration** – Optionally connect to a mockapi.io endpoint for remote data; falls back to local data when offline or not configured.
 
-## 评分点覆盖
+## Tech Stack
 
-- UI/UX 与无障碍：XAML 页面、底部导航、一致的视觉风格、深色模式、语义描述和屏幕阅读器播报。
-- 移动硬件：相机、定位、文字转语音、震动和触觉反馈。
-- 功能完整性：列表、搜索、添加、详情、设置和硬件演示流程。
-- 验证与错误处理：必填项检查、数字检查、权限错误和硬件不可用提示。
-- 代码质量：模型和服务分离、命名清晰、可复用的目录服务，以及范围清晰的页面代码。
-- 部署：面向 Android 和 Windows 的 .NET MAUI 跨平台应用。
-- GitHub 使用：建议持续提交，例如 `添加食品列表`、`实现硬件页面`、`添加输入验证`。
+- **.NET 9** + **.NET MAUI**
+- Supported platforms: Android, iOS, Mac Catalyst, Windows
+- XAML for UI
+- Services: `FoodCatalogService`, `SpeechService`, `AccessibilityService`
+- Hardware APIs: `MediaPicker`, `Geolocation`, `TextToSpeech`, `Vibration`, `HapticFeedback`
 
-## 运行方式
+## Requirements
 
-使用安装了 .NET MAUI 工作负载的 Visual Studio 2022 打开 `FoodDrinkApp.csproj` 或 `FoodDrinkApp.sln`。
+- Visual Studio 2022 (17.8 or later) with **.NET MAUI workload** installed
+- Android SDK (for Android builds) or Windows 10/11 (for Windows Machine target)
+- Optional: a mockapi.io endpoint (see Configuration)
 
-推荐演示目标：
+## Getting Started
 
-- Android 模拟器
-- Windows Machine
+### 1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd FoodDrinkApp
+2. Open the project
+Open FoodDrinkApp.csproj or FoodDrinkApp.sln in Visual Studio.
 
-Windows 构建命令：
+3. Restore NuGet packages
+Right-click the solution → Restore NuGet Packages.
 
-```powershell
-dotnet build .\FoodDrinkApp.csproj -f net9.0-windows10.0.19041.0
-```
+4. Build and run
+For Windows (recommended for easy testing):
 
-Android 构建命令：
+In Visual Studio toolbar, set the debug target to Windows Machine.
 
-```powershell
-dotnet build .\FoodDrinkApp.csproj -f net9.0-android
-```
+Press F5.
 
-本项目通过 `Directory.Build.props` 将构建输出放到 `C:\MauiBuild\NutriTrack\`，用于规避 Android 打包工具在中文路径下的 `assets` 路径问题。
+For Android:
 
-## 录屏演示清单
+Set debug target to an Android emulator or a physical device.
 
-- 说明“食品与饮品”主题和“食光营养助手”的应用概念。
-- 展示搜索、详情页和添加新记录。
-- 演示不填必填项、输入非法数字时的验证提示。
-- 演示相机、定位、文字转语音、震动和触觉反馈。
-- 展示深色模式和大字体模式。
-- 展示关键代码文件：模型、服务、页面和 Android 权限配置。
-- 展示 Android 和 Windows 部署效果。
-- 展示 GitHub 提交历史和 README。
+Ensure hardware acceleration is enabled for emulator performance.
+
+Build and deploy.
+
+Configuration (Optional Mock API)
+By default the app uses local in-memory data. To connect to a mock API:
+
+Create an endpoint on mockapi.io (resource: FoodItem).
+
+Open Services/MockApiConfig.cs and set the EndpointUrl constant:
+
+csharp
+public const string EndpointUrl = "https://your-mockapi-url/api/v1/foods";
+Rebuild the app – it will now read/write data from the remote API.
+
+Project Structure
+text
+FoodDrinkApp/
+├── Models/
+│   └── FoodItem.cs
+├── Services/
+│   ├── AccessibilityService.cs
+│   ├── FoodCatalogService.cs
+│   ├── MockApiConfig.cs
+│   └── SpeechService.cs
+├── Pages/
+│   ├── MainPage.xaml/.cs
+│   ├── AddItemPage.xaml/.cs
+│   ├── FoodDetailPage.xaml/.cs
+│   ├── HardwarePage.xaml/.cs
+│   └── SettingsPage.xaml/.cs
+├── App.xaml/.cs
+├── AppShell.xaml/.cs
+├── MauiProgram.cs
+├── Platforms/
+│   ├── Android/
+│   │   ├── AndroidManifest.xml
+│   │   └── ...
+│   ├── iOS/
+│   ├── MacCatalyst/
+│   └── Windows/
+└── Resources/
+    ├── Styles/
+    ├── Fonts/
+    └── Images/
+Hardware Features Demo
+Feature	Page	Required Permission
+Camera (take photo)	HardwarePage	CAMERA
+Location (get current)	HardwarePage	ACCESS_FINE_LOCATION
+Text-to-speech	FoodDetailPage / HardwarePage	None (uses TTS engine)
+Vibration	FoodDetailPage / HardwarePage	VIBRATE
+Haptic feedback	HardwarePage	None (system feedback)
+On Android 11+, the manifest includes a <queries> element to enable camera intent detection.
+
+Screenshots (suggested)
+You can add screenshots of the main list, add form, detail page, and hardware demo.
+
+Known Issues & Workarounds
+Android emulator camera error: Ensure your emulator has a camera configured (use webcam) and the manifest includes the <queries> block as shown in this project.
+
+Build error with XML encoding: If you see "root level data invalid", make sure all .xaml and .xml files are saved as UTF-8 without BOM.
+
+License
+This project is for educational purposes. Feel free to use and modify for your own learning.
+
+Credits
+Developed as a .NET MAUI course project.
